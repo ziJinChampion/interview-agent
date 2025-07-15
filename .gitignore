@@ -1,0 +1,9 @@
+interview-agent
+app/db/chroma_db
+app/docs/**/*.md
+app/docs/**/*.png
+app/docs/**/*.drawio
+app/docs/**/*.gif
+**/.env.local
+logs
+tests

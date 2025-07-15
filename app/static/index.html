@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Interview Agent Chat</title>
+    <link rel="stylesheet" href="/static/style.css" />
+  </head>
+  <body>
+    <!-- Job Setup Modal -->
+    <div id="job-setup-modal" class="modal">
+      <div class="modal-content">
+        <h2>Welcome to Interview Agent</h2>
+        <p>Please provide your job information to get started:</p>
+        <form id="job-setup-form">
+          <div class="form-group">
+            <label for="job-title">Job Title:</label>
+            <input
+              type="text"
+              id="job-title"
+              placeholder="e.g., Software Engineer, Data Scientist..."
+              required
+            />
+          </div>
+          <div class="form-group">
+            <label for="job-description">Job Description:</label>
+            <textarea
+              id="job-description"
+              placeholder="Paste the job description here..."
+              rows="6"
+              required
+            ></textarea>
+          </div>
+          <div class="form-group">
+            <label for="user-resume">Your resume:</label>
+            <textarea
+              id="user-resume"
+              placeholder="Paste your resume here..."
+              rows="6"
+              required
+            ></textarea>
+          </div>
+          <button type="submit">Start Interview</button>
+        </form>
+      </div>
+    </div>
+
+    <div id="chat-container">
+      <div id="chat-window"></div>
+      <form id="chat-form">
+        <textarea
+          role="textbox"
+          aria-multiline="true"
+          id="chat-input"
+          placeholder="Type your message..."
+          autocomplete="off"
+          required
+        ></textarea>
+        <button type="submit">Send</button>
+      </form>
+    </div>
+    <script src="/static/chat.js"></script>
+  </body>
+</html>
