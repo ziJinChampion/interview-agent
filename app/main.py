@@ -2,38 +2,20 @@ from fastapi import FastAPI
 from fastapi.staticfiles import StaticFiles
 from contextlib import asynccontextmanager
 import os
-import logging
-import sys
+import time
 from fastapi.responses import HTMLResponse
 from app.api import interview
 from app.core.vector_store import vector_store_service
+from app.core.logger import get_logger, log_startup, log_shutdown, log_success, log_error
 
-# Configure logging with multiple handlers
-def setup_logging():
-    # Create logs directory if it doesn't exist
-    os.makedirs("logs", exist_ok=True)
-    
-    # Configure logging
-    logging.basicConfig(
-        level=logging.INFO,
-        format='%(asctime)s - %(name)s - %(levelname)s - %(message)s',
-        handlers=[
-            # Console handler (shows in terminal)
-            logging.StreamHandler(sys.stdout),
-            # File handler (saves to file)
-            logging.FileHandler('logs/app.log', mode='a', encoding='utf-8'),
-        ]
-    )
-
-# Setup logging
-setup_logging()
-logger = logging.getLogger(__name__)
+# Get logger for this module
+logger = get_logger("main")
 
 @asynccontextmanager
 async def lifespan(app: FastAPI):
     """Initialize vector store on application startup."""
     try:
-        logger.info("🚀 Starting application...")
+        log_startup("Interview Agent Application")
         logger.info("📚 Initializing vector store...")
         
         # Initialize vector store service
@@ -43,16 +25,16 @@ async def lifespan(app: FastAPI):
         if vector_store:
             collection = vector_store._collection
             count = collection.count()
-            logger.info(f"✅ Vector store initialized successfully with {count} documents")
+            log_success(f"Vector store initialized successfully with {count} documents")
         else:
             logger.warning("⚠️ Vector store initialization failed")
             
         yield  # This is where the app runs
         
-        logger.info("🛑 Shutting down application...")
+        log_shutdown("Interview Agent Application")
             
     except Exception as e:
-        logger.error(f"❌ Error during startup: {e}")
+        log_error(f"Error during startup: {e}")
         raise
 
 app = FastAPI(

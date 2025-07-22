@@ -4,7 +4,7 @@ from fastapi import APIRouter
 from fastapi.responses import StreamingResponse
 from pydantic import BaseModel
 from typing import List, Literal, Optional
-from app.llm.chain import ask_openai, search_documents
+from app.llm.chain import chain_ask_openai, search_documents
 from app.core.vector_store import vector_store_service
 import os
 import logging
@@ -30,7 +30,7 @@ class SearchRequest(BaseModel):
 @router.post("/chat")
 async def chat(request: ChatRequest):
     return StreamingResponse(
-        ask_openai(request.messages, request.job_tile, request.job_description, request.user_resume),
+        await chain_ask_openai(request.messages, request.job_tile, request.job_description, request.user_resume),
         media_type="text/event-stream"
     )
 
